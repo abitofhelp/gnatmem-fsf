@@ -1,0 +1,48 @@
+-- ===========================================================================
+-- gnatmem_fsf.gpr - Build for the gnatmem_fsf tool
+-- ===========================================================================
+-- Copyright (c) 2026 Michael Gardner, A Bit of Help, Inc.
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- See LICENSE file in the project root.
+--
+-- Purpose:
+--   Builds gnatmem_fsf (debug or release) from src/. No OS-specific code:
+--   the same project builds on Windows 11 and 64-bit Linux.
+-- ===========================================================================
+
+project Gnatmem_Fsf is
+
+   type Build_Type is ("debug", "release");
+   Build : Build_Type := external ("BUILD", "debug");
+
+   for Languages use ("Ada");
+   for Source_Dirs use ("src");
+   for Main use ("gnatmem.adb");
+   for Object_Dir use "obj/" & Build;
+   for Exec_Dir use "bin/" & Build;
+
+   package Builder is
+      --  Distinct from AdaCore's gnatmem, which GNAT Pro puts on PATH
+      for Executable ("gnatmem.adb") use "gnatmem_fsf";
+   end Builder;
+
+   --  Units imported unchanged from FSF GCC 4.5.4 compile with warnings
+   --  suppressed until they are cleaned up; new units use full warnings.
+
+   package Compiler is
+      case Build is
+         when "debug" =>
+            for Default_Switches ("Ada") use
+              ("-gnat95", "-g", "-O0", "-gnatf", "-gnatwa", "-gnata");
+         when "release" =>
+            for Default_Switches ("Ada") use
+              ("-gnat95", "-O2", "-gnatf", "-gnatwa");
+      end case;
+
+      for Switches ("gnatmem.adb") use
+        Compiler'Default_Switches ("Ada") & ("-gnatws");
+      for Switches ("memroot.adb") use
+        Compiler'Default_Switches ("Ada") & ("-gnatws");
+   end Compiler;
+
+end Gnatmem_Fsf;

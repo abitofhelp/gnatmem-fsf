@@ -1,0 +1,36 @@
+-- ===========================================================================
+-- leaker.gpr - Instrumented test program
+-- ===========================================================================
+-- Copyright (c) 2026 Michael Gardner, A Bit of Help, Inc.
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- See LICENSE file in the project root.
+--
+-- Purpose:
+--   Builds Leaker with debug information and libgmem (-lgmem) so its
+--   gmem.out can be analyzed by the tests.
+-- ===========================================================================
+
+project Leaker is
+   for Languages use ("Ada");
+   for Source_Dirs use (".");
+   for Main use ("leaker.adb");
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+
+   --  Windows sets the OS environment variable to "Windows_NT"
+   type OS_Type is ("Windows_NT", "other");
+   OS : OS_Type := external ("OS", "other");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat95", "-g", "-O0");
+   end Compiler;
+
+   package Linker is
+      case OS is
+         when "Windows_NT" =>
+            for Default_Switches ("Ada") use ("-g", "-lgmem");
+         when "other" =>
+            for Default_Switches ("Ada") use ("-g", "-lgmem", "-no-pie");
+      end case;
+   end Linker;
+end Leaker;
