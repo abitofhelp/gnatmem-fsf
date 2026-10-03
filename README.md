@@ -1,11 +1,11 @@
 # gnatmem_fsf
 
-**Version:** 0.1.0
-**Date:** October 2, 2026
-**SPDX-License-Identifier:** GPL-3.0-or-later
-**License File:** See the LICENSE file in the project root.
-**Copyright:** © 2026 Michael Gardner, A Bit of Help, Inc. Original gnatmem sources © 1997-2008 AdaCore and © 2000-2009 Free Software Foundation, Inc.
-**Status:** In development
+**Version:** 0.1.0<br>
+**Date:** October 2, 2026<br>
+**SPDX-License-Identifier:** GPL-3.0-or-later<br>
+**License File:** See the LICENSE file in the project root.<br>
+**Copyright:** © 2026 Michael Gardner, A Bit of Help, Inc. Original gnatmem sources © 1997-2008 AdaCore and © 2000-2009 Free Software Foundation, Inc.<br>
+**Status:** In development<br>
 
 ## Overview
 
